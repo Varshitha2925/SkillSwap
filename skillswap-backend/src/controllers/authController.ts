@@ -43,7 +43,7 @@ export const login: RequestHandler = async (req: Request, res: Response, next: N
     const token = jwt.sign(
       { userId: user }, 
       process.env.JWT_SECRET as string,  // Ensure this is defined
-      { expiresIn: '1h' }
+      { expiresIn: '60h' }
     );
     res.json({ token });
   } catch (error) {
