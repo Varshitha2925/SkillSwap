@@ -1,9 +1,6 @@
 import e, { NextFunction, Request, RequestHandler, Response } from 'express';
-import User from '../models/User';
 import Skills from '../models/Skills';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { NextApiRequest, NextApiResponse } from 'next';
 
 export const addSkill: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
