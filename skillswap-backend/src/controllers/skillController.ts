@@ -11,6 +11,7 @@ export const addSkill: RequestHandler = async (req: Request, res: Response, next
     }
 
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
+    console.log("Decoded from JWT",decoded);
     const { name, description } = req.body;
 
     const skill = await Skills.create({ name, description, userId: decoded.userId });
