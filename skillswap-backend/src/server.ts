@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db';
 import authRoutes from './routes/authRoutes';
+import skillRoutes from './routes/skillRoutes';
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/skills', skillRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 3000;
