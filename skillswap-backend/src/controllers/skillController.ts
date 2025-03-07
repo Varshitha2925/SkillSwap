@@ -1,6 +1,7 @@
 import e, { NextFunction, Request, RequestHandler, Response } from 'express';
 import Skills from '../models/Skills';
 import jwt from 'jsonwebtoken';
+import User from '../models/User';
 
 export const addSkill: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -15,6 +16,8 @@ export const addSkill: RequestHandler = async (req: Request, res: Response, next
     const { name, description } = req.body;
 
     const skill = await Skills.create({ name, description, userId: decoded.userId });
+    await User.findByIdAndUpdate(decoded.userId, { $push: { skills: skill._id } });
+
     res.status(201).json(skill);
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });
