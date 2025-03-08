@@ -5,16 +5,17 @@ import User from '../models/User';
 export const matchUsersBySkills = async (req: any, res: any) => {
   
   const { userId } = req.body;
+  console.log("User ID",userId);
 
   const user = await User.findById(userId);
   if (!user) return res.status(404).json({ message: 'User not found' });
-
+    console.log("User",user.skills);
   // Find users who share at least one skill
   const matchedUsers = await User.find({
     _id: { $ne: userId }, // Exclude current user
     skills: { $in: user.skills }, // Match users with overlapping skills
   });
-
+  console.log("Matched Users",matchedUsers);
   // Calculate match score based on skill overlap
   const sortedMatches = matchedUsers.map((match) => ({
     user: match,

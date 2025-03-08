@@ -16,7 +16,7 @@ export const addSkill: RequestHandler = async (req: Request, res: Response, next
     const { name, description } = req.body;
 
     const skill = await Skills.create({ name, description, userId: decoded.userId });
-    await User.findByIdAndUpdate(decoded.userId, { $push: { skills: skill._id } });
+    await User.findByIdAndUpdate(decoded.userId._id, { $push: { skills: skill._id } });
 
     res.status(201).json(skill);
   } catch (error) {
