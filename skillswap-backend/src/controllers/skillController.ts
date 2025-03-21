@@ -3,24 +3,29 @@ import Skills from '../models/Skills';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
-export const addSkill: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const addSkill = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-      res.status(401).json({ message: 'Unauthorized' });
-      return;
+    const { name, userId } = req.body;
+    console.log("Skill Name",name);
+    console.log("User ID",userId);
+
+    let skill = await Skills.findOne({ name: name });
+
+    if (skill) {
+      // Skill exists, add user if not already in the array
+      if (!skill.users.includes(userId)) {
+        skill.users.push(userId);
+        await skill.save();
+      }
+    } else {
+      // Create new skill
+      skill = new Skills({ name: name, users: [userId] });
+      await skill.save();
     }
 
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
-    console.log("Decoded from JWT",decoded);
-    const { name, description } = req.body;
-
-    const skill = await Skills.create({ name, description, userId: decoded.userId });
-    await User.findByIdAndUpdate(decoded.userId._id, { $push: { skills: skill._id } });
-
-    res.status(201).json(skill);
+    res.status(200).json({ message: 'Skill added successfully', skill });
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ error: 'Server error' });
   }
 };
 
