@@ -16,6 +16,16 @@ export const addSkill = async (req: Request, res: Response) => {
       if (!skill.users.includes(userId)) {
         skill.users.push(userId);
         await skill.save();
+
+
+      let user = await User.findById(userId);
+      console.log("User",user);
+      if(user){
+        
+        user.skills.push(name);
+        console.log("User Skills",user.skills);
+        await user.save();
+      }
       }
     } else {
       // Create new skill
@@ -24,8 +34,17 @@ export const addSkill = async (req: Request, res: Response) => {
       console.log("User List",userList);
       skill = new Skills({ name: name, users: userList });
       console.log("Skill",skill);
-
       await skill.save();
+
+      let user = await User.findById(userId);
+      console.log("User",user);
+      if(user){
+        
+        user.skills.push(name);
+        console.log("User Skills",user.skills);
+        await user.save();
+      }
+      
     }
 
     res.status(200).json({ message: 'Skill added successfully', skill });
