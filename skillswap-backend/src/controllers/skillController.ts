@@ -19,7 +19,12 @@ export const addSkill = async (req: Request, res: Response) => {
       }
     } else {
       // Create new skill
-      skill = new Skills({ name: name, users: [userId] });
+      console.log("Creating new skill");
+      const userList = [userId];
+      console.log("User List",userList);
+      skill = new Skills({ name: name, users: userList });
+      console.log("Skill",skill);
+
       await skill.save();
     }
 
