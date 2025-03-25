@@ -22,7 +22,7 @@ export const addSkill = async (req: Request, res: Response) => {
       console.log("User",user);
       if(user){
         
-        user.skills.push(name);
+        user.skills.push(skill._id);
         console.log("User Skills",user.skills);
         await user.save();
       }
@@ -40,7 +40,7 @@ export const addSkill = async (req: Request, res: Response) => {
       console.log("User",user);
       if(user){
         
-        user.skills.push(name);
+        user.skills.push(skill._id);
         console.log("User Skills",user.skills);
         await user.save();
       }
