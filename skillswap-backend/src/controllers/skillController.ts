@@ -61,3 +61,20 @@ export const getSkill: RequestHandler = async (req: Request, res: Response, next
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
+export const searchskills: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { query } = req.query;
+
+    if (!query) {
+       res.status(400).json({ error: 'Search query is required' });
+    }
+
+    // Case-insensitive search
+    const skills = await Skills.find({ name: { $regex: query, $options: 'i' } });
+
+    res.status(200).json(skills);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
